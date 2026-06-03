@@ -5,18 +5,15 @@
 
 > **Версия 0.1.0** - ранний релиз, пока не тестировалось. Тесты будут добавлены в версии 1.0.0.
 
-![Version](https://img.shields.io/github/v/tag/L1ghtsitte/duster?label=version&color=blue)
+---
+
 ![License](https://img.shields.io/github/license/L1ghtsitte/duster?color=green)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Docker-lightgrey)
 ![Status](https://img.shields.io/badge/status-v0.1.0%20(pre--release)-orange)
 
 **PC Club Management System** с аналитикой, Telegram ботом и WebRTC видеопотоком
 
-[![GitHub](https://img.shields.io/badge/GitHub-L1ghtsitte-000?logo=github)](https://github.com/L1ghtsitte)
-[![Telegram Channel](https://img.shields.io/badge/Telegram-duster__pc-0088cc?logo=telegram)](https://t.me/duster_pc)
-[![Contact](https://img.shields.io/badge/Contact-pisunyra-pink)](https://t.me/pisunyra?text=1000-7)
-
----
+# [![GitHub](https://img.shields.io/badge/GitHub-L1ghtsitte-000?logo=github)](https://github.com/L1ghtsitte) [![Telegram Channel](https://img.shields.io/badge/Telegram-duster__pc-0088cc?logo=telegram)](https://t.me/duster_pc) [![Contact](https://img.shields.io/badge/Contact-pisunyra-pink)](https://t.me/pisunyra?text=1000-7)
 
 ## 🚀 Быстрая установка (один клик)
 
