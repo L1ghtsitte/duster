@@ -1,5 +1,3 @@
-<img src="img/background.png" alt="Duster Banner" width="100%">
-
 # Duster
 
 
