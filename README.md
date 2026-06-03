@@ -18,7 +18,6 @@
 ### Windows
 
 ```powershell
-curl https://github.com/L1ghtsitte/releases/download/v0.1.0/install.ps1 -o install.ps1
 .\install.ps1
 ```
 
@@ -31,8 +30,6 @@ curl https://github.com/L1ghtsitte/releases/download/v0.1.0/install.ps1 -o insta
 ### Linux (Ubuntu/Debian/CentOS)
 
 ```bash
-wget https://github.com/L1ghtsitte/releases/download/v0.1.0/install.sh
-chmod +x install.sh
 sudo ./install.sh
 ```
 
