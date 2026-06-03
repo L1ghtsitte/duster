@@ -1,0 +1,23 @@
+{
+  "name": "duster",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Система управления ПК-клубом: сервер, админ, клиенты",
+  "workspaces": [
+    "packages/*",
+    "packages/i18n",
+    "packages/player-pwa"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@duster/server & npm run dev --workspace=@duster/admin-web & npm run dev --workspace=@duster/client-web",
+    "dev:server": "npm run dev --workspace=@duster/server",
+    "dev:admin": "npm run dev --workspace=@duster/admin-web",
+    "dev:client-web": "npm run dev --workspace=@duster/client-web",
+    "build": "npm run build --workspaces --if-present",
+    "db:migrate": "npm run db:migrate --workspace=@duster/server",
+    "db:seed": "npm run db:seed --workspace=@duster/server"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

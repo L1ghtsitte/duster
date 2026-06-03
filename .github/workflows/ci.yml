@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: duster
+          POSTGRES_PASSWORD: duster
+          POSTGRES_DB: duster
+        ports: [5432:5432]
+        options: --health-cmd "pg_isready -U duster" --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:7-alpine
+        ports: [6379:6379]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm install
+      - run: npm run build --workspace=@duster/shared
+      - name: Prisma setup
+        working-directory: packages/server
+        env:
+          DATABASE_URL: postgresql://duster:duster@localhost:5432/duster
+        run: npx prisma db push && npm run db:seed
+
+      - run: npm run build --workspace=@duster/server --if-present
+      - run: npm run build --workspace=@duster/admin-web --if-present
+      - run: npm run build --workspace=@duster/client-web --if-present
+      - name: Docker build
+        run: docker build -t duster-server:ci .

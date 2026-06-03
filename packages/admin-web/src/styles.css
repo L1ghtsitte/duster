@@ -1,0 +1,236 @@
+:root {
+  --bg: #0f1419;
+  --panel: #1a2332;
+  --border: #2d3a4f;
+  --text: #e8edf4;
+  --muted: #8b9cb3;
+  --accent: #3d8bfd;
+  --ok: #3ecf8e;
+  --warn: #f0b429;
+  --danger: #f56565;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 1rem;
+}
+
+.sidebar h1 {
+  font-size: 1.25rem;
+  margin: 0 0 1.5rem;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  background: #243044;
+  color: var(--text);
+}
+
+.main {
+  padding: 1.5rem;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+button,
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+button.secondary {
+  background: #374151;
+}
+
+button.danger {
+  background: var(--danger);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input,
+select {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  margin-right: 0.5rem;
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  width: 360px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.badge.online {
+  background: #1a3d2e;
+  color: var(--ok);
+}
+.badge.offline {
+  background: #3d1a1a;
+  color: var(--danger);
+}
+.badge.in_use {
+  background: #3d351a;
+  color: var(--warn);
+}
+.badge.locked {
+  background: #2d2d3d;
+  color: var(--muted);
+}
+
+.grid-pcs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.pc-tile {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.pc-tile .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.pc-tile .actions button {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.4rem;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stat-card .stat-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.stat-card .stat-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.club-map {
+  position: relative;
+  height: 520px;
+  background: linear-gradient(180deg, #0a0e14 0%, #141c28 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.map-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 8px;
+  background: var(--panel);
+  border: 2px solid;
+  border-radius: 10px;
+  text-align: center;
+  cursor: grab;
+  min-width: 72px;
+  font-size: 0.75rem;
+}
+
+.heatmap {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 120px;
+}
+
+.heat-bar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--accent), #1a3d6e);
+  min-height: 4px;
+  border-radius: 2px 2px 0 0;
+}
+
+.sidebar nav a {
+  display: block;
+}

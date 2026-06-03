@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Secure lock with NVIDIA branding -->
+  <rect x="14" y="28" width="36" height="24" rx="3" fill="#76b900" opacity="0.1" stroke="#76b900" stroke-width="1.5"/>
+  <!-- Lock body -->
+  <path d="M20 32c0-3 2.5-5.5 5.5-5.5s5.5 2.5 5.5 5.5" stroke="#76b900" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Lock shackle -->
+  <path d="M25.5 32v-4c0-3 2-5.5 6.5-5.5s6.5 2.5 6.5 5.5v4" stroke="#76b900" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- Lock face -->
+  <rect x="18" y="32" width="28" height="20" rx="2" fill="#76b900" opacity="0.2" stroke="#76b900" stroke-width="1.5"/>
+  <!-- Keyhole -->
+  <circle cx="32" cy="42" r="2.5" fill="#76b900"/>
+  <!-- NVIDIA branding indicator -->
+  <text x="32" y="54" text-anchor="middle" font-size="8" fill="#76b900" font-family="Arial">NVENC</text>
+</svg>

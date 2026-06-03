@@ -1,0 +1,12 @@
+{
+  "name": "@duster/i18n",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./ru": "./locales/ru.json",
+    "./en": "./locales/en.json",
+    "./zh": "./locales/zh.json",
+    "./locales/*": "./locales/*"
+  }
+}

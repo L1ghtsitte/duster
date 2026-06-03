@@ -1,0 +1,494 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- Multi-tenant (сетевой режим) ---
+model Club {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  timezone  String   @default("Europe/Moscow")
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  admins        Admin[]
+  players       Player[]
+  computers     Computer[]
+  pcProfiles    PcProfile[]
+  products      Product[]
+  packages      Package[]
+  tariffRules   TariffRule[]
+  shifts        Shift[]
+  settings      Setting[]
+  blockedProcs  BlockedProcess[]
+  achievements  Achievement[]
+  giveaways     Giveaway[]
+  announcements Announcement[]
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  clubId       String?
+  login        String
+  passwordHash String
+  displayName  String
+  isSuperAdmin Boolean  @default(false)
+  permissions  String   @default("[]")
+  totpSecret   String?
+  totpEnabled  Boolean  @default(false)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  club          Club?                @relation(fields: [clubId], references: [id])
+  sales         Sale[]
+  shifts        Shift[]
+  topups        BalanceTransaction[]
+  reservations  Reservation[]
+  auditLogs     AuditLog[]
+  announcements Announcement[]
+
+  @@unique([clubId, login])
+}
+
+model Player {
+  id                   String    @id @default(cuid())
+  clubId               String
+  username             String
+  passwordHash         String?
+  pin                  String?
+  displayName          String
+  group                String    @default("standard")
+  balance              Float     @default(0)
+  bonusBalance         Float     @default(0)
+  prepaidMinutes       Int       @default(0)
+  unlimitedTime        Boolean   @default(false)
+  customBonusPercent   Float?
+  level                Int       @default(1)
+  xp                   Int       @default(0)
+  email                String?
+  phone                String?
+  telegramUserId       String?
+  telegramLinkCode     String?
+  telegramLinkExpires  DateTime?
+  telegramAvatarFileId String?
+  telegramUsername     String?
+  referralCode         String?
+  referredById         String?
+  loyaltyPoints        Int       @default(0)
+  birthDate            String?
+  address              String?
+  notes                String?
+  tags                 String?
+  avatarColor          String?   @default("#3d8bfd")
+  desktopPrefsJson     String?
+  totalTopups          Float     @default(0)
+  totalSpent           Float     @default(0)
+  visitCount           Int       @default(0)
+  lastVisitAt          DateTime?
+  active               Boolean   @default(true)
+  createdAt            DateTime  @default(now())
+
+  club             Club                   @relation(fields: [clubId], references: [id])
+  sessions         Session[]
+  sales            Sale[]
+  transactions     BalanceTransaction[]
+  reservations     Reservation[]
+  achievements     PlayerAchievement[]
+  referredBy       Player?                @relation("PlayerReferrals", fields: [referredById], references: [id])
+  referrals        Player[]               @relation("PlayerReferrals")
+  telegramLogins   TelegramLoginRequest[]
+  giveawayEntries  GiveawayEntry[]
+
+  @@unique([clubId, username])
+  @@unique([clubId, phone])
+  @@unique([clubId, telegramUserId])
+  @@unique([clubId, referralCode])
+  @@index([clubId])
+}
+
+model Computer {
+  id              String    @id @default(cuid())
+  clubId          String
+  name            String
+  number          Int
+  macAddress      String?
+  ipAddress       String?
+  zone            String    @default("main")
+  status          String    @default("offline")
+  agentToken      String    @unique @default(cuid())
+  agentVersion    String?
+  lastSeenAt      DateTime?
+  wolEnabled      Boolean   @default(true)
+  shellMode       String    @default("native")
+  maintenanceNote String?
+  mapX            Float     @default(0)
+  mapY            Float     @default(0)
+  profileId       String?
+  usbPolicy       String?
+  lastTelemetry   String?
+  createdAt       DateTime  @default(now())
+
+  club         Club           @relation(fields: [clubId], references: [id])
+  sessions     Session[]
+  reservations Reservation[]
+  peripherals  Peripheral[]
+  profile      PcProfile?     @relation(fields: [profileId], references: [id])
+
+  @@unique([clubId, number])
+  @@index([clubId])
+}
+
+model PcProfile {
+  id              String     @id @default(cuid())
+  clubId          String
+  name            String
+  zone            String?
+  brightness      Int        @default(100)
+  mouseSpeed      Int        @default(10)
+  blockUsbStorage Boolean    @default(true)
+  allowUsbCharge  Boolean    @default(true)
+  cleanupOnLock   Boolean    @default(true)
+  settingsJson    String?
+  createdAt       DateTime   @default(now())
+
+  club      Club       @relation(fields: [clubId], references: [id])
+  computers Computer[]
+
+  @@index([clubId])
+}
+
+model Product {
+  id         String     @id @default(cuid())
+  clubId     String
+  sku        String?
+  name       String
+  category   String     @default("snack")
+  price      Float
+  cost       Float      @default(0)
+  stock      Int        @default(0)
+  trackStock Boolean    @default(true)
+  active     Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+
+  club      Club       @relation(fields: [clubId], references: [id])
+  saleItems SaleItem[]
+
+  @@unique([clubId, sku])
+  @@index([clubId])
+}
+
+model Package {
+  id           String   @id @default(cuid())
+  clubId       String
+  name         String
+  description  String?
+  price        Float
+  minutes      Int      @default(0)
+  balanceGrant Float    @default(0)
+  group        String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  club  Club   @relation(fields: [clubId], references: [id])
+  sales Sale[]
+
+  @@index([clubId])
+}
+
+model TariffRule {
+  id           String   @id @default(cuid())
+  clubId       String
+  name         String
+  zone         String?
+  dayOfWeek    Int?
+  hourFrom     Int
+  hourTo       Int
+  pricePerHour Float
+  loadFactor   Float?
+  active       Boolean  @default(true)
+  priority     Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  club Club @relation(fields: [clubId], references: [id])
+
+  @@index([clubId])
+}
+
+model Session {
+  id           String    @id @default(cuid())
+  playerId     String
+  computerId   String
+  status       String    @default("active")
+  startedAt    DateTime  @default(now())
+  endsAt       DateTime?
+  pausedAt     DateTime?
+  minutes      Int?
+  isUnlimited  Boolean   @default(false)
+  cost         Float     @default(0)
+  offlineToken String?
+  player       Player    @relation(fields: [playerId], references: [id])
+  computer     Computer  @relation(fields: [computerId], references: [id])
+}
+
+model Sale {
+  id        String     @id @default(cuid())
+  adminId   String?
+  shiftId   String?
+  playerId  String?
+  packageId String?
+  total     Float
+  payment   String     @default("cash")
+  createdAt DateTime   @default(now())
+  admin     Admin?     @relation(fields: [adminId], references: [id])
+  shift     Shift?     @relation(fields: [shiftId], references: [id])
+  player    Player?    @relation(fields: [playerId], references: [id])
+  package   Package?   @relation(fields: [packageId], references: [id])
+  items     SaleItem[]
+}
+
+model SaleItem {
+  id        String   @id @default(cuid())
+  saleId    String
+  productId String?
+  name      String
+  qty       Int      @default(1)
+  unitPrice Float
+  sale      Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product   Product? @relation(fields: [productId], references: [id])
+}
+
+model Shift {
+  id            String    @id @default(cuid())
+  clubId        String
+  adminId       String
+  status        String    @default("open")
+  openedAt      DateTime  @default(now())
+  closedAt      DateTime?
+  openingCash   Float     @default(0)
+  closingCash   Float?
+  cardTotal     Float?
+  notes         String?
+  snapshotJson  String?
+  reportPdfPath String?
+  exportPath    String?
+  club          Club      @relation(fields: [clubId], references: [id])
+  admin         Admin     @relation(fields: [adminId], references: [id])
+  sales         Sale[]
+
+  @@index([clubId])
+}
+
+model BalanceTransaction {
+  id           String   @id @default(cuid())
+  playerId     String
+  adminId      String?
+  shiftId      String?
+  type         String
+  amount       Float
+  bonusAmount  Float    @default(0)
+  bonusPercent Float    @default(0)
+  balanceAfter Float
+  minutesAdded Int      @default(0)
+  note         String?
+  createdAt    DateTime @default(now())
+  player       Player   @relation(fields: [playerId], references: [id])
+  admin        Admin?   @relation(fields: [adminId], references: [id])
+}
+
+model TopupBonusTier {
+  id           String   @id @default(cuid())
+  clubId       String
+  minAmount    Float
+  bonusPercent Float
+  label        String?
+  active       Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  @@index([clubId])
+}
+
+model Reservation {
+  id         String   @id @default(cuid())
+  computerId String
+  playerId   String?
+  adminId    String?
+  title      String?
+  startAt    DateTime
+  endAt      DateTime
+  status     String   @default("confirmed")
+  notes      String?
+  createdAt  DateTime @default(now())
+  computer   Computer @relation(fields: [computerId], references: [id])
+  player     Player?  @relation(fields: [playerId], references: [id])
+  admin      Admin?   @relation(fields: [adminId], references: [id])
+}
+
+model Peripheral {
+  id         String   @id @default(cuid())
+  computerId String
+  type       String
+  name       String
+  serial     String?
+  connected  Boolean  @default(true)
+  lastSeenAt DateTime @default(now())
+  computer   Computer @relation(fields: [computerId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  clubId    String?
+  adminId   String?
+  playerId  String?
+  action    String
+  entity    String?
+  entityId  String?
+  details   String?
+  createdAt DateTime @default(now())
+  admin     Admin?   @relation(fields: [adminId], references: [id])
+
+  @@index([clubId])
+}
+
+model Announcement {
+  id        String    @id @default(cuid())
+  clubId    String
+  adminId   String
+  title     String
+  body      String
+  active    Boolean   @default(true)
+  expiresAt DateTime?
+  createdAt DateTime  @default(now())
+  club      Club      @relation(fields: [clubId], references: [id])
+  admin     Admin     @relation(fields: [adminId], references: [id])
+}
+
+model Achievement {
+  id          String              @id @default(cuid())
+  clubId      String
+  code        String
+  name        String
+  description String?
+  iconKey     String?
+  xpReward    Int                 @default(50)
+  club        Club                @relation(fields: [clubId], references: [id])
+  players     PlayerAchievement[]
+
+  @@unique([clubId, code])
+}
+
+model PlayerAchievement {
+  id            String      @id @default(cuid())
+  playerId      String
+  achievementId String
+  unlockedAt    DateTime    @default(now())
+  player        Player      @relation(fields: [playerId], references: [id])
+  achievement   Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([playerId, achievementId])
+}
+
+model AgentRelease {
+  id           String   @id @default(cuid())
+  component    String
+  version      String
+  downloadUrl  String
+  checksum     String?
+  releaseNotes String?
+  createdAt    DateTime @default(now())
+
+  @@unique([component, version])
+}
+
+model Setting {
+  clubId String
+  key    String
+  value  String
+  club   Club   @relation(fields: [clubId], references: [id])
+
+  @@id([clubId, key])
+}
+
+model BlockedProcess {
+  id          String   @id @default(cuid())
+  clubId      String
+  namePattern String
+  hashSha256  String?
+  action      String   @default("kill")
+  alertAdmin  Boolean  @default(true)
+  screenshot  Boolean  @default(false)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  club        Club     @relation(fields: [clubId], references: [id])
+
+  @@index([clubId])
+}
+
+model PhoneLinkRequest {
+  id        String   @id @default(cuid())
+  playerId  String
+  phone     String
+  code      String
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model QrLoginToken {
+  id         String    @id @default(cuid())
+  playerId   String
+  token      String    @unique
+  computerId String?
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+model TelegramLoginRequest {
+  id         String   @id @default(cuid())
+  playerId   String
+  computerId String
+  token      String   @unique
+  status     String   @default("pending")
+  sessionId  String?
+  sessionJwt String?
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  player     Player   @relation(fields: [playerId], references: [id])
+}
+
+model Giveaway {
+  id              String          @id @default(cuid())
+  clubId          String
+  title           String
+  description     String?
+  prizeText       String
+  status          String          @default("draft")
+  groupChatId     String?
+  messageId       String?
+  winnerId        String?
+  minTopup        Float?
+  requireChannel  Boolean         @default(false)
+  channelUsername String?
+  endsAt          DateTime
+  createdAt       DateTime        @default(now())
+  club            Club            @relation(fields: [clubId], references: [id])
+  entries         GiveawayEntry[]
+}
+
+model GiveawayEntry {
+  id             String   @id @default(cuid())
+  giveawayId     String
+  playerId       String?
+  telegramUserId String
+  createdAt      DateTime @default(now())
+  giveaway       Giveaway @relation(fields: [giveawayId], references: [id], onDelete: Cascade)
+  player         Player?  @relation(fields: [playerId], references: [id])
+
+  @@unique([giveawayId, telegramUserId])
+}

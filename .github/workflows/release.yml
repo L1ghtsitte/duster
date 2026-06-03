@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm install
+      - run: npm run build
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            scripts/install.ps1
+            scripts/install.sh
+            docker-compose.yml
+          body: |
+            ## Duster v${{ github.ref_name }}
+            
+            Установка:
+            - **Windows:** `curl https://github.com/L1ghtsitte/releases/download/${{ github.ref_name }}/install.ps1 -o install.ps1 && .\\install.ps1`
+            - **Linux:** `wget https://github.com/L1ghtsitte/releases/download/${{ github.ref_name }}/install.sh && chmod +x install.sh && sudo ./install.sh`
+            - **Docker:** `docker compose up -d`
+            
+            Ссылка: https://github.com/L1ghtsitte
+            Telegram: https://t.me/duster_pc
+            
+            ---
+            Не тестировалось, тесты с v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

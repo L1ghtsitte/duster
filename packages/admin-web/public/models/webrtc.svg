@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Background -->
+  <rect width="64" height="64" fill="none"/>
+  <!-- Camera body -->
+  <rect x="8" y="16" width="48" height="32" rx="4" fill="#2d3a4f" stroke="#5b8def" stroke-width="2"/>
+  <!-- Camera lens -->
+  <circle cx="32" cy="32" r="14" fill="none" stroke="#5b8def" stroke-width="2"/>
+  <circle cx="32" cy="32" r="10" fill="#5b8def" opacity="0.3"/>
+  <!-- Live indicator (red dot) -->
+  <circle cx="46" cy="18" r="4" fill="#f56565"/>
+  <!-- Video waves -->
+  <path d="M52 22c0-2 1.5-3.5 3.5-3.5" stroke="#5b8def" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <path d="M54 20c0-3 2-5 5-5" stroke="#5b8def" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+</svg>

@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: duster
+      POSTGRES_PASSWORD: duster
+      POSTGRES_DB: duster
+    ports:
+      - "5432:5432"
+    volumes:
+      - duster_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U duster"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - duster_redis:/data
+
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3847:3847"
+    environment:
+      DATABASE_URL: postgresql://duster:duster@postgres:5432/duster
+      REDIS_URL: redis://redis:6379
+      DUSTER_HOST: 0.0.0.0
+      DUSTER_PORT: 3847
+      DUSTER_JWT_SECRET: change-me-in-production
+      DUSTER_PUBLIC_URL: https://your-domain.example
+      DUSTER_DEFAULT_CLUB_SLUG: default
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - duster_data:/app/packages/server/data
+
+volumes:
+  duster_pg:
+  duster_redis:
+  duster_data:

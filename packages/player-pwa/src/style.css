@@ -1,0 +1,33 @@
+:root {
+  --bg: #0f1419;
+  --card: #1a2332;
+  --accent: #5b8def;
+  --text: #e8edf5;
+  --muted: #8b9cb3;
+  --ok: #3ecf8e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.app { max-width: 420px; margin: 0 auto; padding: 1rem; }
+header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 1.25rem;
+}
+input, button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+}
+button { background: var(--accent); color: #fff; cursor: pointer; }
+.hint { color: var(--muted); font-size: 0.85rem; }
+.ok { color: var(--ok); font-weight: bold; }

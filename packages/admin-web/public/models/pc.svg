@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Monitor body -->
+  <rect x="8" y="10" width="48" height="32" rx="3" fill="#1a2332" stroke="#3d8bfd" stroke-width="2"/>
+  <!-- Monitor screen content indicators -->
+  <line x1="14" y1="16" x2="50" y2="16" stroke="#3d8bfd" stroke-width="1" opacity="0.4"/>
+  <line x1="14" y1="20" x2="50" y2="20" stroke="#3d8bfd" stroke-width="1" opacity="0.4"/>
+  <line x1="14" y1="24" x2="50" y2="24" stroke="#3d8bfd" stroke-width="1" opacity="0.4"/>
+  <line x1="14" y1="28" x2="40" y2="28" stroke="#3d8bfd" stroke-width="1" opacity="0.4"/>
+  <!-- Monitor stand base -->
+  <rect x="20" y="44" width="24" height="4" rx="1" fill="#3d8bfd"/>
+  <!-- Monitor base platform -->
+  <rect x="14" y="48" width="36" height="3" rx="1" fill="#2d3a4f"/>
+</svg>

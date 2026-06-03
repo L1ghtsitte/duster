@@ -1,0 +1,9 @@
+{
+  "name": "Duster Player",
+  "short_name": "Duster",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f1419",
+  "theme_color": "#5b8def",
+  "icons": [{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

@@ -1,0 +1,21 @@
+<Window x:Class="Duster.Shell.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Duster" Height="500" Width="420"
+        WindowStartupLocation="CenterScreen" WindowStyle="None" ResizeMode="NoResize"
+        Background="#0f1419">
+  <Grid Margin="24">
+    <StackPanel VerticalAlignment="Center">
+      <TextBlock Text="DUSTER" FontSize="32" FontWeight="Bold" Foreground="#5b8def" HorizontalAlignment="Center"/>
+      <TextBlock x:Name="PcLabel" Margin="0,8,0,24" Foreground="#8b9cb3" HorizontalAlignment="Center"/>
+      <PasswordBox x:Name="PinBox" Height="40" Margin="0,0,0,12" FontSize="16"/>
+      <Button Content="Войти" Height="44" Click="LoginClick" Background="#5b8def" Foreground="White" BorderThickness="0"/>
+      <TextBlock x:Name="StatusText" Margin="0,16,0,0" Foreground="#f56565" TextWrapping="Wrap"/>
+      <TextBlock x:Name="SessionText" Margin="0,12,0,0" Foreground="#3ecf8e" TextWrapping="Wrap"/>
+      <Button x:Name="GameHubBtn" Content="Game Hub" Margin="0,12,0,0" Visibility="Collapsed"
+              Click="GameHubClick" Background="#2d3a4f" Foreground="White" BorderThickness="0"/>
+      <Button x:Name="LogoutBtn" Content="Завершить сессию" Margin="0,8,0,0" Visibility="Collapsed"
+              Click="LogoutClick" Background="#374151" Foreground="White" BorderThickness="0"/>
+    </StackPanel>
+  </Grid>
+</Window>
