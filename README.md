@@ -1,6 +1,9 @@
+<img src="img/background.png" alt="Duster Banner" width="100%">
+
 # Duster
 
-<img src="img/background.png" alt="Duster Banner" width="100%">
+
+> **Версия 0.1.0** - ранний релиз, пока не тестировалось. Тесты будут добавлены в версии 1.0.0.
 
 ![Version](https://img.shields.io/github/v/tag/L1ghtsitte/duster?label=version&color=blue)
 ![License](https://img.shields.io/github/license/L1ghtsitte/duster?color=green)
@@ -241,5 +244,3 @@ TELEGRAM_BOT_TOKEN=токен-от-botfather
 MIT License - свободное использование и модификация
 
 ---
-
-> **Версия 0.1.0** - ранний релиз, пока не тестировалось. Тесты будут добавлены в версии 1.0.0.
